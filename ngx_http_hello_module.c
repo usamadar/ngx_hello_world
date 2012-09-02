@@ -7,10 +7,16 @@ static char *ngx_http_hello(ngx_conf_t *cf, void *post, void *data);
 
 static ngx_conf_post_handler_pt ngx_http_hello_p = ngx_http_hello;
 
+/*
+ * The structure will holds the value of the 
+ * module directive hello
+ */
 typedef struct {
     ngx_str_t   name;
 } ngx_http_hello_loc_conf_t;
 
+/* The function which initializes memory for the module configuration structure       
+ */
 static void *
 ngx_http_hello_create_loc_conf(ngx_conf_t *cf)
 {
@@ -24,6 +30,11 @@ ngx_http_hello_create_loc_conf(ngx_conf_t *cf)
     return conf;
 }
 
+/* 
+ * The command array or array, which holds one subarray for each module 
+ * directive along with a function which validates the value of the 
+ * directive and also initializes the main handler of this module
+ */
 static ngx_command_t ngx_http_hello_commands[] = {
     { ngx_string("hello"),
       NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
@@ -38,7 +49,10 @@ static ngx_command_t ngx_http_hello_commands[] = {
  
 static ngx_str_t hello_string;
  
- 
+/*
+ * The module context has hooks , here we have a hook for creating
+ * location configuration
+ */
 static ngx_http_module_t ngx_http_hello_module_ctx = {
     NULL,                          /* preconfiguration */
     NULL,                          /* postconfiguration */
@@ -53,7 +67,11 @@ static ngx_http_module_t ngx_http_hello_module_ctx = {
     NULL                           /* merge location configuration */
 };
  
- 
+
+/*
+ * The module which binds the context and commands 
+ * 
+ */
 ngx_module_t ngx_http_hello_module = {
     NGX_MODULE_V1,
     &ngx_http_hello_module_ctx,    /* module context */
@@ -69,7 +87,9 @@ ngx_module_t ngx_http_hello_module = {
     NGX_MODULE_V1_PADDING
 };
  
- 
+/*
+ * Main handler function of the module. 
+ */
 static ngx_int_t
 ngx_http_hello_handler(ngx_http_request_t *r)
 {
@@ -133,7 +153,10 @@ ngx_http_hello_handler(ngx_http_request_t *r)
     return ngx_http_output_filter(r, &out);
 }
  
- 
+/*
+ * Function for the directive hello , it validates its value
+ * and copies it to a static variable to be printed later
+ */
 static char *
 ngx_http_hello(ngx_conf_t *cf, void *post, void *data)
 {
